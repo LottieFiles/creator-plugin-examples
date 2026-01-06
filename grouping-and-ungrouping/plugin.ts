@@ -1,14 +1,13 @@
 /**
- * Grouping and Ungrouping Example
+ * Grouping Shapes Example
  *
  * Demonstrates how to:
- * - Create multiple shapes
- * - Group shapes together
+ * - Create multiple shapes in a container
+ * - Group shapes together using container.createGroup()
  * - Transform groups as a unit
- * - Ungroup shapes
  */
 
-creator.ui.show({ width: 300, height: 280 });
+creator.ui.show({ width: 300, height: 220 });
 
 interface Message {
   type: string;
@@ -19,21 +18,21 @@ creator.ui.onMessage((msg: Message) => {
 
   switch (msg.type) {
     case "create-shapes": {
-      // Create a rectangle
+      // Create a rectangle container
       const rect = scene.createRectangleContainer({
         position: { x: 100, y: 100 },
         shape: { size: { width: 80, height: 80 } },
       });
       rect.addFill({ type: "SOLID", color: { r: 66, g: 133, b: 244 } });
 
-      // Create an ellipse next to it
+      // Create an ellipse container next to it
       const ellipse = scene.createEllipseContainer({
         position: { x: 220, y: 100 },
         shape: { size: { width: 80, height: 80 } },
       });
       ellipse.addFill({ type: "SOLID", color: { r: 234, g: 67, b: 53 } });
 
-      // Create a star below
+      // Create a star container below
       const star = scene.createStarContainer({
         position: { x: 160, y: 220 },
         shape: {
@@ -48,38 +47,30 @@ creator.ui.onMessage((msg: Message) => {
       break;
     }
 
-    case "group-selected": {
-      const selection = creator.selection.nodes;
+    case "group-shapes": {
+      // Create a container with multiple shapes, then group them
+      const container = scene.createRectangleContainer({
+        position: { x: 150, y: 150 },
+        shape: { size: { width: 60, height: 60 } },
+      });
+      container.addFill({ type: "SOLID", color: { r: 66, g: 133, b: 244 } });
 
-      if (selection.length < 2) {
-        creator.ui.postMessage({
-          type: "error",
-          message: "Select at least 2 shapes to group",
-        });
-        return;
-      }
+      // Create additional shapes in the same container
+      const ellipse = container.createEllipse({
+        size: { width: 40, height: 40 },
+      });
 
-      // Find a container to create the group in
-      const firstNode = selection[0];
-      if (firstNode && "createGroup" in firstNode) {
-        // This creates a group containing the selected shapes
-        const container = firstNode as { createGroup: (shapes: unknown[]) => unknown };
-        container.createGroup(selection);
-        creator.ui.postMessage({ type: "grouped" });
-      }
-      break;
-    }
+      const rect = container.createRectangle({
+        size: { width: 30, height: 30 },
+      });
 
-    case "ungroup-selected": {
-      const selection = creator.selection.nodes;
+      // Group the shapes within the container
+      const group = container.createGroup([ellipse, rect]);
 
-      for (const node of selection) {
-        if (node.type === "GROUP" && "ungroup" in node) {
-          const group = node as { ungroup: () => void };
-          group.ungroup();
-        }
-      }
-      creator.ui.postMessage({ type: "ungrouped" });
+      creator.ui.postMessage({
+        type: "grouped",
+        message: `Created group with ${group.children.length} shapes`,
+      });
       break;
     }
   }

@@ -69,12 +69,16 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "create-path": {
-      // Create a custom heart shape using path data
+      // Create a custom triangle shape using path points
       const path = scene.createPathContainer({
         position: { x: 150, y: 150 },
         shape: {
-          pathData:
-            "M 0 -40 C 20 -60 50 -60 50 -30 C 50 0 25 20 0 50 C -25 20 -50 0 -50 -30 C -50 -60 -20 -60 0 -40 Z",
+          points: [
+            { vertex: { x: 0, y: -50 }, inTan: { x: 0, y: 0 }, outTan: { x: 0, y: 0 } },
+            { vertex: { x: 50, y: 50 }, inTan: { x: 0, y: 0 }, outTan: { x: 0, y: 0 } },
+            { vertex: { x: -50, y: 50 }, inTan: { x: 0, y: 0 }, outTan: { x: 0, y: 0 } },
+          ],
+          closed: true,
         },
       });
       path.addFill({ type: "SOLID", color: { r: 233, g: 30, b: 99 } });

@@ -50,12 +50,12 @@ creator.ui.onMessage((msg: Message) => {
           const container = node as {
             fills: unknown[];
             addFill: (fill: { type: string; color: { r: number; g: number; b: number } }) => void;
-            removeFill: (fill: unknown) => void;
+            removeFill: (index: number) => void;
           };
 
-          // Remove existing fills
-          while (container.fills.length > 0) {
-            container.removeFill(container.fills[0]);
+          // Remove existing fills (remove from end to avoid index shifting)
+          for (let i = container.fills.length - 1; i >= 0; i--) {
+            container.removeFill(i);
           }
 
           // Add new fill

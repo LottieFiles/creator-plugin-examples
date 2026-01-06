@@ -64,17 +64,16 @@
   </style>
 </head>
 <body>
-  <h3>Grouping & Ungrouping</h3>
-  <p>Create shapes, then select and group them together.</p>
+  <h3>Grouping Shapes</h3>
+  <p>Create individual container layers, or group shapes within a single container.</p>
 
   <div class="buttons">
-    <button id="create" class="primary">Create Sample Shapes</button>
-    <button id="group">Group Selected</button>
-    <button id="ungroup">Ungroup Selected</button>
+    <button id="create" class="primary">Create Container Layers</button>
+    <button id="group">Group Shapes in Container</button>
   </div>
 
   <div id="status" class="status">
-    Click "Create Sample Shapes" to start
+    Click a button to see grouping in action
   </div>
 
   <script>
@@ -85,11 +84,7 @@
     });
 
     document.getElementById('group').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'group-selected' } }, '*');
-    });
-
-    document.getElementById('ungroup').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'ungroup-selected' } }, '*');
+      parent.postMessage({ pluginMessage: { type: 'group-shapes' } }, '*');
     });
 
     // Listen for messages from the plugin
@@ -99,13 +94,10 @@
 
       switch (msg.type) {
         case 'shapes-created':
-          status.textContent = 'Shapes created! Select them in the canvas and click "Group Selected"';
+          status.textContent = 'Created 3 container layers with shapes';
           break;
         case 'grouped':
-          status.textContent = 'Shapes grouped! Select the group and click "Ungroup Selected" to separate them';
-          break;
-        case 'ungrouped':
-          status.textContent = 'Shapes ungrouped!';
+          status.textContent = msg.message || 'Shapes grouped in container';
           break;
         case 'error':
           status.textContent = msg.message;

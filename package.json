@@ -4,6 +4,6 @@
   "private": true,
   "devDependencies": {
     "@lottiefiles/creator-plugin-types": "^0.0.8",
-    "typescript": "^5.0.0"
+    "typescript": "~5.9.3"
   }
 }
