@@ -1,0 +1,7 @@
+{
+  "id": "com.lottiefiles.example.animating-shape-properties",
+  "name": "Animating Shape Properties",
+  "apiVersion": "1",
+  "entry": "plugin.js",
+  "ui": "ui.html"
+}

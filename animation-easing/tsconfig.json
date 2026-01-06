@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2020",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": []
+  },
+  "include": ["plugin.ts", "../node_modules/@lottiefiles/creator-plugin-types"]
+}

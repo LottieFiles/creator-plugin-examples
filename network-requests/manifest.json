@@ -1,0 +1,7 @@
+{
+  "id": "com.lottiefiles.example.network-requests",
+  "name": "Network Requests",
+  "apiVersion": "1",
+  "entry": "plugin.js",
+  "ui": "ui.html"
+}

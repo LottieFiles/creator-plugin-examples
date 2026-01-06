@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 12px 0;
+      font-size: 12px;
+      color: #999;
+      line-height: 1.4;
+    }
+
+    .section {
+      margin-bottom: 16px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 8px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    input {
+      flex: 1;
+      background: #333;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    input::placeholder {
+      color: #666;
+    }
+
+    button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    button.primary {
+      background: #0066ff;
+    }
+
+    button.primary:hover {
+      background: #0052cc;
+    }
+
+    .output {
+      margin-top: 8px;
+      padding: 8px;
+      background: #222;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #aaa;
+      min-height: 20px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h3>Storing Data</h3>
+  <p>Two ways to persist data: client storage (browser) and node data (file).</p>
+
+  <div class="section">
+    <div class="section-title">Client Storage</div>
+    <div class="section-desc">Stored in browser, persists across sessions (5 MB limit)</div>
+
+    <div class="row">
+      <input type="text" id="client-key" placeholder="Key">
+      <input type="text" id="client-value" placeholder="Value">
+    </div>
+    <div class="row">
+      <button id="client-save" class="primary">Save</button>
+      <button id="client-load">Load</button>
+      <button id="client-list">List Keys</button>
+      <button id="client-clear">Clear</button>
+    </div>
+    <div id="client-output" class="output">-</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Node Data</div>
+    <div class="section-desc">Stored on layers, saved with file (5 KB per node)</div>
+
+    <div class="row">
+      <button id="create-shape" style="width: 100%;">Create Sample Shape</button>
+    </div>
+    <div class="row">
+      <input type="text" id="node-key" placeholder="Key">
+      <input type="text" id="node-value" placeholder="Value">
+    </div>
+    <div class="row">
+      <button id="node-save" class="primary">Save to Layer</button>
+      <button id="node-load">Load</button>
+      <button id="node-list">List Keys</button>
+    </div>
+    <div id="node-output" class="output">Create a shape first, then store data on it</div>
+  </div>
+
+  <script>
+    const clientOutput = document.getElementById('client-output');
+    const nodeOutput = document.getElementById('node-output');
+
+    // Client storage actions
+    document.getElementById('client-save').addEventListener('click', () => {
+      const key = document.getElementById('client-key').value;
+      const value = document.getElementById('client-value').value;
+      if (key && value) {
+        parent.postMessage({ pluginMessage: { type: 'client-save', key, value } }, '*');
+      }
+    });
+
+    document.getElementById('client-load').addEventListener('click', () => {
+      const key = document.getElementById('client-key').value;
+      if (key) {
+        parent.postMessage({ pluginMessage: { type: 'client-load', key } }, '*');
+      }
+    });
+
+    document.getElementById('client-list').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'client-list' } }, '*');
+    });
+
+    document.getElementById('client-clear').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'client-clear' } }, '*');
+    });
+
+    // Node data actions
+    document.getElementById('create-shape').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'create-sample-shape' } }, '*');
+    });
+
+    document.getElementById('node-save').addEventListener('click', () => {
+      const key = document.getElementById('node-key').value;
+      const value = document.getElementById('node-value').value;
+      if (key && value) {
+        parent.postMessage({ pluginMessage: { type: 'node-save', key, value } }, '*');
+      }
+    });
+
+    document.getElementById('node-load').addEventListener('click', () => {
+      const key = document.getElementById('node-key').value;
+      if (key) {
+        parent.postMessage({ pluginMessage: { type: 'node-load', key } }, '*');
+      }
+    });
+
+    document.getElementById('node-list').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'node-list' } }, '*');
+    });
+
+    // Listen for messages from the plugin
+    window.addEventListener('message', (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      switch (msg.type) {
+        case 'client-saved':
+        case 'client-cleared':
+          clientOutput.textContent = msg.message;
+          break;
+        case 'client-loaded':
+          clientOutput.textContent = `${msg.key}: ${msg.value}`;
+          break;
+        case 'client-keys':
+          clientOutput.textContent = msg.keys.length > 0 ? msg.keys.join(', ') : '(empty)';
+          break;
+        case 'node-saved':
+        case 'shape-created':
+          nodeOutput.textContent = msg.message;
+          break;
+        case 'node-loaded':
+          nodeOutput.textContent = `${msg.key}: ${msg.value}`;
+          break;
+        case 'node-keys':
+          nodeOutput.textContent = msg.keys.length > 0 ? msg.keys.join(', ') : '(empty)';
+          break;
+        case 'error':
+          nodeOutput.textContent = msg.message;
+          break;
+      }
+    });
+  </script>
+</body>
+</html>

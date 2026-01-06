@@ -1,0 +1,7 @@
+{
+  "id": "com.lottiefiles.example.storing-data",
+  "name": "Storing Data",
+  "apiVersion": "1",
+  "entry": "plugin.js",
+  "ui": "ui.html"
+}

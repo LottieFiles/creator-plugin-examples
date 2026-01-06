@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Compiled plugin files 
+*/plugin.js
+
+# React example build output
+*/dist/
+
+# OS files
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo

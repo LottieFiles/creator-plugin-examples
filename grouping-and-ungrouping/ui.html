@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    button.primary {
+      background: #0066ff;
+      border-color: #0066ff;
+    }
+
+    button.primary:hover {
+      background: #0052cc;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h3>Grouping & Ungrouping</h3>
+  <p>Create shapes, then select and group them together.</p>
+
+  <div class="buttons">
+    <button id="create" class="primary">Create Sample Shapes</button>
+    <button id="group">Group Selected</button>
+    <button id="ungroup">Ungroup Selected</button>
+  </div>
+
+  <div id="status" class="status">
+    Click "Create Sample Shapes" to start
+  </div>
+
+  <script>
+    const status = document.getElementById('status');
+
+    document.getElementById('create').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'create-shapes' } }, '*');
+    });
+
+    document.getElementById('group').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'group-selected' } }, '*');
+    });
+
+    document.getElementById('ungroup').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'ungroup-selected' } }, '*');
+    });
+
+    // Listen for messages from the plugin
+    window.addEventListener('message', (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      switch (msg.type) {
+        case 'shapes-created':
+          status.textContent = 'Shapes created! Select them in the canvas and click "Group Selected"';
+          break;
+        case 'grouped':
+          status.textContent = 'Shapes grouped! Select the group and click "Ungroup Selected" to separate them';
+          break;
+        case 'ungrouped':
+          status.textContent = 'Shapes ungrouped!';
+          break;
+        case 'error':
+          status.textContent = msg.message;
+          break;
+      }
+    });
+  </script>
+</body>
+</html>

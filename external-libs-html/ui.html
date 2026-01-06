@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Load external library via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .info-box code {
+      background: #333;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 11px;
+    }
+
+    .picker-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .color-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid #444;
+    }
+
+    .color-value {
+      font-family: monospace;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    button.primary {
+      background: #0066ff;
+      border-color: #0066ff;
+    }
+
+    button.primary:hover {
+      background: #0052cc;
+    }
+
+    /* Override Pickr styles for dark theme */
+    .pickr .pcr-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h3>External Libraries</h3>
+  <p>Using a color picker library loaded via CDN.</p>
+
+  <div class="info-box">
+    This example uses <code>@simonwep/pickr</code> loaded from jsDelivr CDN.
+    In HTML/JS plugins, you can include any library with a <code>&lt;script&gt;</code> tag.
+  </div>
+
+  <div class="picker-container">
+    <div id="color-picker"></div>
+    <div>
+      <div class="color-preview" id="preview" style="background: #4285f4;"></div>
+    </div>
+    <div class="color-value" id="color-value">#4285f4</div>
+  </div>
+
+  <div class="buttons">
+    <button id="create-shape" class="primary">Create Shape with Color</button>
+    <button id="apply-selected">Apply to Selected</button>
+  </div>
+
+  <!-- Load Pickr library -->
+  <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+
+  <script>
+    let currentColor = '#4285f4';
+
+    // Initialize the color picker library
+    const pickr = Pickr.create({
+      el: '#color-picker',
+      theme: 'nano',
+      default: currentColor,
+      components: {
+        preview: true,
+        hue: true,
+        interaction: {
+          input: true,
+          save: true
+        }
+      }
+    });
+
+    // Update when color changes
+    pickr.on('change', (color) => {
+      currentColor = color.toHEXA().toString();
+      document.getElementById('preview').style.background = currentColor;
+      document.getElementById('color-value').textContent = currentColor;
+    });
+
+    pickr.on('save', () => {
+      pickr.hide();
+    });
+
+    // Button handlers
+    document.getElementById('create-shape').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'create-colored-shape',
+          color: currentColor
+        }
+      }, '*');
+    });
+
+    document.getElementById('apply-selected').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'apply-to-selected',
+          color: currentColor
+        }
+      }, '*');
+    });
+  </script>
+</body>
+</html>

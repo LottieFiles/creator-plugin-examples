@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      background: #2a2a2a;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .info-box code {
+      background: #333;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      background: #333;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+
+    input::placeholder {
+      color: #666;
+    }
+
+    button {
+      background: #0066ff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #0052cc;
+    }
+
+    button:disabled {
+      background: #444;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    .status.success { color: #4caf50; }
+    .status.error { color: #f44336; }
+    .status.loading { color: #ffc107; }
+  </style>
+</head>
+<body>
+  <h3>Network Requests</h3>
+  <p>Fetch SVG content from a URL and import it into the scene.</p>
+
+  <div class="info-box">
+    <strong>How it works:</strong><br>
+    Plugin code can't make network requests directly. The UI fetches data using <code>fetch()</code>, then sends it to the plugin via <code>postMessage</code>.
+  </div>
+
+  <label>SVG URL</label>
+  <input
+    type="url"
+    id="url-input"
+    value="https://upload.wikimedia.org/wikipedia/commons/0/02/SVG_logo.svg"
+    placeholder="Enter SVG URL"
+  >
+
+  <button id="fetch-btn">Fetch & Import SVG</button>
+
+  <div id="status" class="status">
+    Enter a URL and click the button to fetch an SVG
+  </div>
+
+  <script>
+    const urlInput = document.getElementById('url-input');
+    const fetchBtn = document.getElementById('fetch-btn');
+    const status = document.getElementById('status');
+
+    fetchBtn.addEventListener('click', async () => {
+      const url = urlInput.value.trim();
+
+      if (!url) {
+        status.textContent = 'Please enter a URL';
+        status.className = 'status error';
+        return;
+      }
+
+      // Show loading state
+      status.textContent = 'Fetching SVG...';
+      status.className = 'status loading';
+      fetchBtn.disabled = true;
+
+      try {
+        // UI makes the network request
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const svgContent = await response.text();
+
+        // Check if it looks like SVG
+        if (!svgContent.includes('<svg')) {
+          throw new Error('Response is not an SVG');
+        }
+
+        // Send the fetched content to the plugin
+        parent.postMessage({
+          pluginMessage: {
+            type: 'import-fetched-svg',
+            content: svgContent
+          }
+        }, '*');
+
+      } catch (error) {
+        status.textContent = `Fetch failed: ${error.message}`;
+        status.className = 'status error';
+        fetchBtn.disabled = false;
+
+        // Notify plugin of error
+        parent.postMessage({
+          pluginMessage: {
+            type: 'fetch-error',
+            error: error.message
+          }
+        }, '*');
+      }
+    });
+
+    // Listen for messages from the plugin
+    window.addEventListener('message', (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      fetchBtn.disabled = false;
+
+      if (msg.type === 'success') {
+        status.textContent = msg.message;
+        status.className = 'status success';
+      } else if (msg.type === 'error') {
+        status.textContent = msg.message;
+        status.className = 'status error';
+      }
+    });
+  </script>
+</body>
+</html>

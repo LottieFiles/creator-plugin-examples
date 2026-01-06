@@ -1,0 +1,7 @@
+{
+  "id": "com.lottiefiles.example.creating-shapes",
+  "name": "Creating Shapes",
+  "apiVersion": "1",
+  "entry": "plugin.js",
+  "ui": "ui.html"
+}

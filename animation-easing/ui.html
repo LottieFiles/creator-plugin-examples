@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    button.primary {
+      background: #0066ff;
+      border-color: #0066ff;
+    }
+
+    button.primary:hover {
+      background: #0052cc;
+    }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <h3>Animation Easing</h3>
+  <p>Compare different easing curves for animations.</p>
+
+  <div class="section">
+    <div class="section-title">Compare All</div>
+    <div class="buttons">
+      <button id="compare" class="primary">
+        Show All Easings Side-by-Side
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Individual Easings</div>
+    <div class="buttons">
+      <button id="linear">
+        <div class="color-dot" style="background: #4285f4;"></div>
+        Linear (constant speed)
+      </button>
+      <button id="ease-in">
+        <div class="color-dot" style="background: #ea4335;"></div>
+        Ease In (slow start)
+      </button>
+      <button id="ease-out">
+        <div class="color-dot" style="background: #fbbc05;"></div>
+        Ease Out (slow end)
+      </button>
+      <button id="ease-in-out">
+        <div class="color-dot" style="background: #34a853;"></div>
+        Ease In Out (slow both)
+      </button>
+      <button id="bounce">
+        <div class="color-dot" style="background: #9c27b0;"></div>
+        Bounce (overshoot)
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const actions = {
+      'compare': 'compare-easings',
+      'linear': 'ease-linear',
+      'ease-in': 'ease-in',
+      'ease-out': 'ease-out',
+      'ease-in-out': 'ease-in-out',
+      'bounce': 'ease-bounce'
+    };
+
+    Object.entries(actions).forEach(([id, type]) => {
+      document.getElementById(id).addEventListener('click', () => {
+        parent.postMessage({ pluginMessage: { type } }, '*');
+      });
+    });
+  </script>
+</body>
+</html>

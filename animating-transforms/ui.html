@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    button.primary {
+      background: #0066ff;
+      border-color: #0066ff;
+    }
+
+    button.primary:hover {
+      background: #0052cc;
+    }
+
+    .description {
+      font-size: 12px;
+      color: #888;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Animating Transforms</h3>
+  <p>Create shapes with different transform animations.</p>
+
+  <div class="buttons">
+    <button id="position">
+      Position Animation
+      <div class="description">Move from left to right and back</div>
+    </button>
+
+    <button id="rotation">
+      Rotation Animation
+      <div class="description">Full 360° spin</div>
+    </button>
+
+    <button id="scale">
+      Scale Animation
+      <div class="description">Pulse effect (grow and shrink)</div>
+    </button>
+
+    <button id="opacity">
+      Opacity Animation
+      <div class="description">Fade in and out</div>
+    </button>
+
+    <button id="combined" class="primary">
+      Combined Animation
+      <div class="description">All transforms together</div>
+    </button>
+  </div>
+
+  <script>
+    const actions = {
+      'position': 'animate-position',
+      'rotation': 'animate-rotation',
+      'scale': 'animate-scale',
+      'opacity': 'animate-opacity',
+      'combined': 'animate-combined'
+    };
+
+    Object.entries(actions).forEach(([id, type]) => {
+      document.getElementById(id).addEventListener('click', () => {
+        parent.postMessage({ pluginMessage: { type } }, '*');
+      });
+    });
+  </script>
+</body>
+</html>

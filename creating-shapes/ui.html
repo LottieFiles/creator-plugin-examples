@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .rect { background: #4285f4; border-radius: 2px; }
+    .ellipse { background: #ea4335; border-radius: 50%; }
+    .polygon { background: #fbbc05; clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); }
+    .star { background: #34a853; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+    .path { background: #e91e63; clip-path: polygon(50% 100%, 0% 35%, 25% 0%, 50% 20%, 75% 0%, 100% 35%); }
+  </style>
+</head>
+<body>
+  <h3>Creating Shapes</h3>
+  <p>Click a button to add a shape to the scene.</p>
+
+  <div class="buttons">
+    <button id="rectangle">
+      <div class="icon rect"></div>
+      Rectangle
+    </button>
+    <button id="ellipse">
+      <div class="icon ellipse"></div>
+      Ellipse
+    </button>
+    <button id="polygon">
+      <div class="icon polygon"></div>
+      Polygon (Hexagon)
+    </button>
+    <button id="star">
+      <div class="icon star"></div>
+      Star
+    </button>
+    <button id="path">
+      <div class="icon path"></div>
+      Path (Heart)
+    </button>
+  </div>
+
+  <script>
+    const buttons = {
+      'rectangle': 'create-rectangle',
+      'ellipse': 'create-ellipse',
+      'polygon': 'create-polygon',
+      'star': 'create-star',
+      'path': 'create-path'
+    };
+
+    Object.entries(buttons).forEach(([id, type]) => {
+      document.getElementById(id).addEventListener('click', () => {
+        parent.postMessage({ pluginMessage: { type } }, '*');
+      });
+    });
+  </script>
+</body>
+</html>

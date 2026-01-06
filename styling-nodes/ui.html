@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    button {
+      background: #333;
+      color: white;
+      border: 1px solid #444;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button:hover {
+      background: #444;
+      border-color: #555;
+    }
+
+    .preview {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .solid { background: #4285f4; }
+    .linear { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .radial { background: radial-gradient(circle at 30% 30%, #fff, #ffc107, #ff5722); }
+    .stroke { background: transparent; border: 2px solid #212121; }
+    .dashed { background: transparent; border: 2px dashed #4caf50; }
+    .combined {
+      background: linear-gradient(135deg, #ffd700, #ff9800);
+      border: 2px solid #e65100;
+    }
+  </style>
+</head>
+<body>
+  <h3>Styling Nodes</h3>
+  <p>Add fills, gradients, and strokes to shapes.</p>
+
+  <div class="section">
+    <div class="section-title">Fills</div>
+    <div class="buttons">
+      <button id="solid">
+        <div class="preview solid"></div>
+        Solid Color Fill
+      </button>
+      <button id="linear">
+        <div class="preview linear"></div>
+        Linear Gradient
+      </button>
+      <button id="radial">
+        <div class="preview radial"></div>
+        Radial Gradient
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Strokes</div>
+    <div class="buttons">
+      <button id="stroke-solid">
+        <div class="preview stroke"></div>
+        Solid Stroke
+      </button>
+      <button id="stroke-dashed">
+        <div class="preview dashed"></div>
+        Dashed Stroke
+      </button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Combined</div>
+    <div class="buttons">
+      <button id="combined">
+        <div class="preview combined"></div>
+        Gradient Fill + Stroke
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const actions = {
+      'solid': 'solid-fill',
+      'linear': 'linear-gradient',
+      'radial': 'radial-gradient',
+      'stroke-solid': 'stroke-solid',
+      'stroke-dashed': 'stroke-dashed',
+      'combined': 'combined'
+    };
+
+    Object.entries(actions).forEach(([id, type]) => {
+      document.getElementById(id).addEventListener('click', () => {
+        parent.postMessage({ pluginMessage: { type } }, '*');
+      });
+    });
+  </script>
+</body>
+</html>
