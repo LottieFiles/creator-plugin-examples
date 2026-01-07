@@ -6,9 +6,7 @@
     "skipLibCheck": true,
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "strict": true,
+    "noEmit": false,
     "typeRoots": [
       "../node_modules/@types",
       "../node_modules/@lottiefiles/creator-plugin-types"

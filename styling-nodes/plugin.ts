@@ -11,7 +11,13 @@
 creator.ui.show({ width: 300, height: 420 });
 
 interface Message {
-  type: string;
+  type:
+    | "solid-fill"
+    | "linear-gradient"
+    | "radial-gradient"
+    | "stroke-solid"
+    | "stroke-dashed"
+    | "combined";
   color?: { r: number; g: number; b: number };
 }
 

@@ -11,7 +11,7 @@
 creator.ui.show({ width: 320, height: 340 });
 
 interface Message {
-  type: string;
+  type: "import-fetched-svg" | "fetch-error";
   content?: string;
   error?: string;
 }

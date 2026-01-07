@@ -12,7 +12,12 @@
 creator.ui.show({ width: 300, height: 380 });
 
 interface Message {
-  type: string;
+  type:
+    | "create-rectangle"
+    | "create-ellipse"
+    | "create-polygon"
+    | "create-star"
+    | "create-path";
 }
 
 creator.ui.onMessage((msg: Message) => {

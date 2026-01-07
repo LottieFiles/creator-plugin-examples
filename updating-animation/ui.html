@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+      margin: 0;
+      background: #1e1e1e;
+      color: #fff;
+    }
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #00C1A2;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      background: #f5f5f5;
+      color: #1e1e1e;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    button:hover {
+      background: #e8e8e8;
+    }
+
+    button.danger {
+      background: #ff6b6b;
+      color: #fff;
+    }
+
+    button.danger:hover {
+      background: #ff5252;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .status.error {
+      color: #ff6b6b;
+    }
+
+    .keyframe-list {
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h3>Updating Animation</h3>
+  <p>Select a layer, then use these tools to inspect and modify its position animation.</p>
+
+  <div class="section">
+    <div class="section-title">Read</div>
+    <div class="buttons">
+      <button id="check">Check Animation Status</button>
+      <button id="read">Read Keyframe Values</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Update</div>
+    <div class="buttons">
+      <button id="update-static">Set Static Value (200, 200)</button>
+      <button id="update-kf">Update Keyframe at Frame 0</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Remove</div>
+    <div class="buttons">
+      <button id="remove-kf">Remove Keyframe at Frame 0</button>
+      <button id="clear" class="danger">Clear All Keyframes</button>
+    </div>
+  </div>
+
+  <div id="status" class="status">
+    Select a layer and click "Check Animation Status" to start
+  </div>
+
+  <script>
+    const status = document.getElementById('status');
+
+    function showStatus(message, isError = false) {
+      status.textContent = message;
+      status.className = isError ? 'status error' : 'status';
+    }
+
+    function showKeyframes(keyframes) {
+      if (keyframes.length === 0) {
+        showStatus('No keyframes found');
+        return;
+      }
+
+      status.className = 'status';
+      status.innerHTML = '<div class="keyframe-list">' +
+        keyframes.map(kf => `Frame ${kf.frame}: (${kf.x}, ${kf.y})`).join('<br>') +
+        '</div>';
+    }
+
+    document.getElementById('check').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'check-animation' } }, '*');
+    });
+
+    document.getElementById('read').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'read-keyframes' } }, '*');
+    });
+
+    document.getElementById('update-static').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: { type: 'update-static', value: { x: 200, y: 200 } }
+      }, '*');
+    });
+
+    document.getElementById('update-kf').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: { type: 'update-keyframe', frame: 0, value: { x: 300, y: 100 } }
+      }, '*');
+    });
+
+    document.getElementById('remove-kf').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: { type: 'remove-keyframe', frame: 0 }
+      }, '*');
+    });
+
+    document.getElementById('clear').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'clear-keyframes' } }, '*');
+    });
+
+    window.addEventListener('message', (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      switch (msg.type) {
+        case 'status':
+          showStatus(msg.message);
+          break;
+        case 'error':
+          showStatus(msg.message, true);
+          break;
+        case 'keyframes':
+          showKeyframes(msg.keyframes);
+          break;
+      }
+    });
+  </script>
+</body>
+</html>

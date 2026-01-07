@@ -10,7 +10,7 @@
 creator.ui.show({ width: 300, height: 220 });
 
 interface Message {
-  type: string;
+  type: "create-shapes" | "group-shapes";
 }
 
 creator.ui.onMessage((msg: Message) => {

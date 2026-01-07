@@ -11,7 +11,7 @@
 creator.ui.show({ width: 320, height: 380 });
 
 interface Message {
-  type: string;
+  type: "import-lottie" | "import-svg" | "import-image" | "import-svg-content";
   url?: string;
   content?: string;
 }

@@ -10,7 +10,7 @@ creator.ui.show({ width: 300, height: 200 });
 
 // Define message types for type safety
 interface Message {
-  type: string;
+  type: "create-rectangle";
 }
 
 // Listen for messages from the UI

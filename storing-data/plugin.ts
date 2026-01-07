@@ -9,7 +9,15 @@
 creator.ui.show({ width: 320, height: 460 });
 
 interface Message {
-  type: string;
+  type:
+    | "client-save"
+    | "client-load"
+    | "client-list"
+    | "client-clear"
+    | "node-save"
+    | "node-load"
+    | "node-list"
+    | "create-sample-shape";
   key?: string;
   value?: string;
 }

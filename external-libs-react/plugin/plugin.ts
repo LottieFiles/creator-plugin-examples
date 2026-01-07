@@ -8,7 +8,7 @@
 creator.ui.show({ width: 300, height: 480 });
 
 interface Message {
-  type: string;
+  type: "create-colored-shape" | "apply-to-selected";
   color?: string;
 }
 
