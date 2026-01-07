@@ -1,14 +1,7 @@
-/**
- * External Libraries Example (React)
- *
- * Plugin code that receives color from the React UI
- * and applies it to shapes.
- */
-
-creator.ui.show({ width: 300, height: 480 });
+creator.ui.show({ width: 300, height: 320 });
 
 interface Message {
-  type: "create-colored-shape" | "apply-to-selected";
+  type: "create-colored-shape";
   color?: string;
 }
 
@@ -25,43 +18,19 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } {
 }
 
 creator.ui.onMessage((msg: Message) => {
-  switch (msg.type) {
-    case "create-colored-shape": {
-      if (!msg.color) return;
+  if (msg.type === "create-colored-shape" && msg.color) {
+    const rgb = hexToRgb(msg.color);
+    const scene = creator.activeScene;
 
-      const rgb = hexToRgb(msg.color);
-      const rect = creator.activeScene.createRectangleContainer({
-        position: { x: 150, y: 150 },
-        shape: { size: { width: 120, height: 120 }, roundness: 12 },
-      });
-      rect.addFill({ type: "SOLID", color: rgb });
-      break;
-    }
+    // Create rectangle at center of scene
+    const layer = scene.createRectangleContainer({
+      position: { x: scene.size.width / 2, y: scene.size.height / 2 },
+      shape: { size: { width: 120, height: 120 }, roundness: 12 },
+    });
 
-    case "apply-to-selected": {
-      if (!msg.color) return;
-
-      const rgb = hexToRgb(msg.color);
-      const selection = creator.selection.nodes;
-
-      for (const node of selection) {
-        if ("fills" in node && "addFill" in node) {
-          const container = node as {
-            fills: unknown[];
-            addFill: (fill: { type: string; color: { r: number; g: number; b: number } }) => void;
-            removeFill: (index: number) => void;
-          };
-
-          // Remove existing fills (remove from end to avoid index shifting)
-          for (let i = container.fills.length - 1; i >= 0; i--) {
-            container.removeFill(i);
-          }
-
-          // Add new fill
-          container.addFill({ type: "SOLID", color: rgb });
-        }
-      }
-      break;
+    // Update the existing fill
+    if (layer.fills.length > 0 && layer.fills[0]?.type === "SOLID") {
+      layer.fills[0].color.staticValue = rgb;
     }
   }
 });

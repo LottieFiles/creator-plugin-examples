@@ -1,10 +1,12 @@
 # Creator Plugin Examples
 
-Example plugins for [LottieFiles Creator](https://www.lottiefiles.com/creator). These examples accompany the [Plugin Documentation](https://developers.lottiefiles.com/creator).
+Example plugins for [LottieFiles Creator](https://www.lottiefiles.com/creator).
 
 ## Getting Started
 
-These plugins are written using TypeScript to take advantage of Creator's typed plugin API. Before loading these as development plugins, you'll need to compile the code using the TypeScript compiler.
+These plugins are written using TypeScript. Creator provides TypeScript types for the Plugin API. This means that if you're writing plugin with TypeScript, you'll get helpful code hints, and will be able to catch errors early.
+
+To preview these plugins in Creator, you'll need to compile the code into HTML and JavaScript or create a local development URL. Here's how:
 
 ### Install dependencies
 
@@ -14,9 +16,25 @@ npm install
 
 ### Compile an example
 
+To compile an HTML plugin:
+
 ```bash
 cd basic-plugin-html
-tsc
+npx tsc
+```
+
+To compile a React plugin:
+
+```bash
+cd basic-plugin-react
+npm build
+```
+
+Or create a local development URL for React plugins:
+
+```bash
+cd basic-plugin-react
+npm run dev
 ```
 
 ### Load in Creator
@@ -24,18 +42,18 @@ tsc
 1. Open [LottieFiles Creator](https://www.lottiefiles.com/creator)
 2. Click **Plugins** in the left sidebar
 3. Click **Develop** → **New plugin**
-4. Serve the example folder locally and enter the URL, or zip the folder and upload it
+4. Serve the example folder locally and enter the URL, or zip the distribution files (`manifest.json`, `plugin.js`, `ui.html`) and upload it
 
 ## Examples
 
-### Getting Started
+### Getting started
 
 | Example | Description |
 |---------|-------------|
 | [basic-plugin-html](./basic-plugin-html) | Minimal plugin with HTML/JS |
 | [basic-plugin-react](./basic-plugin-react) | Plugin using React + Vite |
 
-### Shapes & Styling
+### Shapes and styling
 
 | Example | Description |
 |---------|-------------|
@@ -52,7 +70,7 @@ tsc
 | [animation-easing](./animation-easing) | Apply easing curves to keyframes |
 | [updating-animation](./updating-animation) | Read and modify existing keyframes |
 
-### Assets & Data
+### Assets and data
 
 | Example | Description |
 |---------|-------------|
@@ -60,7 +78,7 @@ tsc
 | [storing-data](./storing-data) | Persist data with clientStorage and node.data |
 | [network-requests](./network-requests) | Fetch data from external APIs |
 
-### External Libraries
+### External libraries
 
 | Example | Description |
 |---------|-------------|

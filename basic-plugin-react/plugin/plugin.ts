@@ -1,31 +1,19 @@
-/**
- * Basic Plugin Example (React)
- *
- * This is the plugin code that runs in Creator's sandbox.
- * It receives messages from the React UI and interacts with the Creator API.
- */
-
 // Show the plugin UI
 creator.ui.show({ width: 300, height: 200 });
 
-// Define message types for type safety
 interface Message {
   type: "create-rectangle";
 }
 
 // Listen for messages from the UI
 creator.ui.onMessage((msg: Message) => {
+  const scene = creator.activeScene;
+
+  // Check if the message matches what we expect
   if (msg.type === "create-rectangle") {
     // Create a rectangle in the active scene
-    const rect = creator.activeScene.createRectangleContainer({
-      position: { x: 100, y: 100 },
-      shape: { size: { width: 200, height: 150 } },
-    });
-
-    // Add a fill color
-    rect.addFill({
-      type: "SOLID",
-      color: { r: 66, g: 133, b: 244 },
+    scene.createRectangleContainer({
+      position: { x: scene.size.width / 2, y: scene.size.height / 2 },
     });
   }
 });

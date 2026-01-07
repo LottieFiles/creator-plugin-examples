@@ -1,12 +1,3 @@
-/**
- * Grouping Shapes Example
- *
- * Demonstrates how to:
- * - Create multiple shapes in a container
- * - Group shapes together using container.createGroup()
- * - Transform groups as a unit
- */
-
 creator.ui.show({ width: 300, height: 220 });
 
 interface Message {
