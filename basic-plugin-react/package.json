@@ -13,8 +13,8 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@lottiefiles/creator-plugin-types": "^0.1.0",
-    "@lottiefiles/vite-plugin-creator": "^0.1.0",
+    "@lottiefiles/creator-plugin-types": "^0.0.8",
+    "@lottiefiles/vite-plugin-creator": "^0.0.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",

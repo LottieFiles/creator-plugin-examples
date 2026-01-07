@@ -125,7 +125,7 @@ export function App() {
           onMouseOver={(e) => (e.currentTarget.style.background = "#e8e8e8")}
           onMouseOut={(e) => (e.currentTarget.style.background = "#f5f5f5")}
         >
-          Create Shape with Color
+          Create shape with color
         </button>
         <button
           style={styles.button}
@@ -133,7 +133,7 @@ export function App() {
           onMouseOver={(e) => (e.currentTarget.style.background = "#e8e8e8")}
           onMouseOut={(e) => (e.currentTarget.style.background = "#f5f5f5")}
         >
-          Apply to Selected
+          Apply to selected
         </button>
       </div>
     </div>

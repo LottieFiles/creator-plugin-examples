@@ -57,7 +57,7 @@ export function App() {
         onMouseOver={(e) => (e.currentTarget.style.background = "#e8e8e8")}
         onMouseOut={(e) => (e.currentTarget.style.background = "#f5f5f5")}
       >
-        Create Rectangle
+        Create rectangle
       </button>
     </div>
   );
