@@ -89,6 +89,7 @@
       font-size: 13px;
       color: #888;
       font-family: monospace;
+      word-break: break-all;
     }
   </style>
 </head>
@@ -118,9 +119,6 @@
     <div class="section-desc">Stored on layers, saved with file (5 KB per node)</div>
 
     <div class="row">
-      <button id="create-shape">Create sample shape</button>
-    </div>
-    <div class="row">
       <input type="text" id="node-key" placeholder="Key">
       <input type="text" id="node-value" placeholder="Value">
     </div>
@@ -128,6 +126,7 @@
       <button id="node-save">Save to layer</button>
       <button id="node-load">Load</button>
       <button id="node-list">List keys</button>
+      <button id="node-clear">Clear</button>
     </div>
     <div id="node-output" class="output">Create a shape first, then store data on it</div>
   </div>
@@ -161,10 +160,6 @@
     });
 
     // Node data actions
-    document.getElementById('create-shape').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'create-sample-shape' } }, '*');
-    });
-
     document.getElementById('node-save').addEventListener('click', () => {
       const key = document.getElementById('node-key').value;
       const value = document.getElementById('node-value').value;
@@ -184,6 +179,10 @@
       parent.postMessage({ pluginMessage: { type: 'node-list' } }, '*');
     });
 
+    document.getElementById('node-clear').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'node-clear' } }, '*');
+    });
+
     // Listen for messages from the plugin
     window.addEventListener('message', (event) => {
       const msg = event.data.pluginMessage;
@@ -201,7 +200,7 @@
           clientOutput.textContent = msg.keys.length > 0 ? msg.keys.join(', ') : '(empty)';
           break;
         case 'node-saved':
-        case 'shape-created':
+        case 'node-cleared':
           nodeOutput.textContent = msg.message;
           break;
         case 'node-loaded':

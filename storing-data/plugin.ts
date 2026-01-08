@@ -1,4 +1,4 @@
-creator.ui.show({ width: 320, height: 460 });
+creator.ui.show({ width: 320, height: 530 });
 
 interface Message {
   type:
@@ -9,7 +9,7 @@ interface Message {
     | "node-save"
     | "node-load"
     | "node-list"
-    | "create-sample-shape";
+    | "node-clear";
   key?: string;
   value?: string;
 }
@@ -91,7 +91,7 @@ creator.ui.onMessage(async (msg: Message) => {
       }
 
       const layer = layers[0];
-      if (msg.key && layer) {
+      if (msg.key) {
         const value = layer.data.get(msg.key);
         creator.ui.postMessage({
           type: "node-loaded",
@@ -123,15 +123,22 @@ creator.ui.onMessage(async (msg: Message) => {
       break;
     }
 
-    case "create-sample-shape": {
-      const rect = creator.activeScene.createRectangleContainer({
-        position: { x: 150, y: 150 },
-        shape: { size: { width: 100, height: 100 } },
-      });
-      rect.addFill({ type: "SOLID", color: { r: 66, g: 133, b: 244 } });
+    case "node-clear": {
+      const layers = creator.activeScene.layers;
+      if (layers.length === 0) {
+        creator.ui.postMessage({
+          type: "error",
+          message: "No layers in scene",
+        });
+        return;
+      }
+
+      const layer = layers[0];
+      layer.data.clear();
+
       creator.ui.postMessage({
-        type: "shape-created",
-        message: "Shape created! Now you can store data on it.",
+        type: "node-cleared",
+        message: "Node data cleared",
       });
       break;
     }
