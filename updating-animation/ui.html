@@ -89,35 +89,35 @@
 </head>
 <body>
   <h3>Updating Animation</h3>
-  <p>Select a layer, then use these tools to inspect and modify its position animation.</p>
+  <p>Select a layer, then use these tools to inspect and modify its position property.</p>
 
   <div class="section">
-    <div class="section-title">Read</div>
+    <div class="section-title">Read position keyframes</div>
     <div class="buttons">
-      <button id="check">Check Animation Status</button>
-      <button id="read">Read Keyframe Values</button>
+      <button id="check">Check animation status</button>
+      <button id="read">Read keyframe values</button>
     </div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-title">Update</div>
+    <div class="section"></div>
+    <div class="section-title">Update position keyframes</div>
     <div class="buttons">
-      <button id="update-static">Set Static Value (200, 200)</button>
-      <button id="update-kf">Update Keyframe at Frame 0</button>
+      <button id="update-static">Set static value (200, 200)</button>
+      <button id="update-kf">Update keyframe at current frame</button>
     </div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-title">Remove</div>
+    <div class="section"></div>
+    <div class="section-title">Remove position keyframes</div>
     <div class="buttons">
-      <button id="remove-kf">Remove Keyframe at Frame 0</button>
-      <button id="clear" class="danger">Clear All Keyframes</button>
+      <button id="remove-kf">Remove keyframe at current frame</button>
+      <button id="clear" class="danger">Clear all keyframes</button>
     </div>
-  </div>
+    </div>
 
-  <div id="status" class="status">
-    Select a layer and click "Check Animation Status" to start
-  </div>
+    <div id="status" class="status">
+    Select a layer and click "Check animation status" to start
+    </div>
 
   <script>
     const status = document.getElementById('status');
@@ -155,13 +155,13 @@
 
     document.getElementById('update-kf').addEventListener('click', () => {
       parent.postMessage({
-        pluginMessage: { type: 'update-keyframe', frame: 0, value: { x: 300, y: 100 } }
+        pluginMessage: { type: 'update-keyframe', value: { x: 300, y: 100 } }
       }, '*');
     });
 
     document.getElementById('remove-kf').addEventListener('click', () => {
       parent.postMessage({
-        pluginMessage: { type: 'remove-keyframe', frame: 0 }
+        pluginMessage: { type: 'remove-keyframe' }
       }, '*');
     });
 

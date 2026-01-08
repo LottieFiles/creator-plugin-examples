@@ -1,14 +1,4 @@
-/**
- * Updating Animation Example
- *
- * Demonstrates how to:
- * - Check if a property has keyframes
- * - Read existing keyframe values
- * - Update static values and keyframe values
- * - Remove individual keyframes or clear all keyframes
- */
-
-creator.ui.show({ width: 300, height: 400 });
+creator.ui.show({ width: 300, height: 500 });
 
 interface Message {
   type:
@@ -18,8 +8,16 @@ interface Message {
     | "update-keyframe"
     | "remove-keyframe"
     | "clear-keyframes";
-  frame?: number;
   value?: { x: number; y: number };
+}
+
+function isLayer(node: Shape | Layer): node is Layer {
+  return (
+    node.type === "CONTAINER" ||
+    node.type === "SCENE_INSTANCE" ||
+    node.type === "IMAGE" ||
+    node.type === "TEXT"
+  );
 }
 
 creator.ui.onMessage((msg: Message) => {
@@ -28,52 +26,38 @@ creator.ui.onMessage((msg: Message) => {
   if (selection.length === 0) {
     creator.ui.postMessage({
       type: "error",
-      message: "Please select a layer first",
+      message: "Please select a layer",
     });
     return;
   }
 
-  const node = selection[0];
+  const layer = selection[0];
 
-  // Check if the node has a position property (is a layer)
-  if (!("position" in node)) {
+  if (!isLayer(layer)) {
     creator.ui.postMessage({
       type: "error",
-      message: "Selected node doesn't have position property",
+      message: "Please select a layer",
     });
     return;
   }
-
-  const layer = node as {
-    position: {
-      isAnimated: boolean;
-      keyframes: ReadonlyArray<{
-        frame: number;
-        value: { x: number; y: number };
-        easing: unknown;
-        remove: () => void;
-      }>;
-      staticValue: { x: number; y: number };
-      getKeyframeAt: (frame: number) => {
-        frame: number;
-        value: { x: number; y: number };
-        easing: unknown;
-        remove: () => void;
-      } | undefined;
-      clearKeyframes: () => void;
-    };
-  };
 
   switch (msg.type) {
     case "check-animation": {
       const isAnimated = layer.position.isAnimated;
+
+      if (!isAnimated) {
+        creator.ui.postMessage({
+          type: "status",
+          message: "Position is not animated (no keyframes)",
+        });
+        return;
+      }
+
       const keyframeCount = layer.position.keyframes.length;
 
       creator.ui.postMessage({
         type: "status",
-        message: isAnimated
-          ? `Position is animated with ${keyframeCount} keyframe(s)`
-          : "Position is not animated (no keyframes)",
+        message: `Position is animated with ${keyframeCount} keyframe(s)`,
       });
       break;
     }
@@ -82,7 +66,9 @@ creator.ui.onMessage((msg: Message) => {
       if (!layer.position.isAnimated) {
         creator.ui.postMessage({
           type: "status",
-          message: `No keyframes. Static value: (${layer.position.staticValue.x.toFixed(0)}, ${layer.position.staticValue.y.toFixed(0)})`,
+          message: `No keyframes. Static value: (${layer.position.staticValue.x.toFixed(
+            0
+          )}, ${layer.position.staticValue.y.toFixed(0)})`,
         });
         return;
       }
@@ -101,7 +87,7 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "update-static": {
-      const newValue = msg.value || { x: 200, y: 200 };
+      const newValue = msg.value;
       layer.position.staticValue = newValue;
 
       creator.ui.postMessage({
@@ -112,7 +98,7 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "update-keyframe": {
-      const frame = msg.frame || 0;
+      const frame = creator.timeline.currentFrame;
       const keyframe = layer.position.getKeyframeAt(frame);
 
       if (!keyframe) {
@@ -123,7 +109,7 @@ creator.ui.onMessage((msg: Message) => {
         return;
       }
 
-      const newValue = msg.value || { x: 300, y: 100 };
+      const newValue = msg.value;
       keyframe.value = newValue;
 
       creator.ui.postMessage({
@@ -134,7 +120,7 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "remove-keyframe": {
-      const frame = msg.frame || 0;
+      const frame = creator.timeline.currentFrame;
       const keyframe = layer.position.getKeyframeAt(frame);
 
       if (!keyframe) {

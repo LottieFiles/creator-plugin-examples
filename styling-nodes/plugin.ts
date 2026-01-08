@@ -1,13 +1,3 @@
-/**
- * Styling Nodes Example
- *
- * Demonstrates how to style shapes with:
- * - Solid color fills
- * - Linear gradients
- * - Radial gradients
- * - Strokes with various properties
- */
-
 creator.ui.show({ width: 300, height: 420 });
 
 interface Message {
