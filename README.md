@@ -58,7 +58,7 @@ npm run dev
 | Example | Description |
 |---------|-------------|
 | [creating-shapes](./creating-shapes) | Create rectangles, ellipses, polygons, stars, and paths |
-| [grouping-and-ungrouping (WIP)](./grouping-and-ungrouping) | Group shapes together |
+| [grouping-shapes (WIP)](./grouping-shapes) | Group shapes together |
 | [styling-nodes (WIP)](./styling-nodes) | Add fills, gradients, and strokes |
 
 ### Animation
@@ -87,5 +87,6 @@ npm run dev
 
 ## TODO
 
-- [ ] complete grouping-and-ungrouping example
+- [ ] complete grouping-shapes example
 - [ ] complete styling nodes example
+- [ ] Update API methods after layer and shape-related API updates are implemented

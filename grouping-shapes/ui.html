@@ -23,12 +23,6 @@
       color: #888;
     }
 
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
     button {
       background: #f5f5f5;
       color: #1e1e1e;
@@ -38,6 +32,7 @@
       font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
+      width: 100%;
     }
 
     button:hover {
@@ -56,43 +51,29 @@
 </head>
 <body>
   <h3>Grouping Shapes</h3>
-  <p>Create individual container layers, or group shapes within a single container.</p>
+  <p>Groups let you animate multiple shapes together. Shapes outside the group are unaffected.</p>
 
-  <div class="buttons">
-    <button id="create">Create container layers</button>
-    <button id="group">Group shapes in container</button>
-  </div>
+  <button id="create">Create layer with groups and shapes</button>
 
   <div id="status" class="status">
-    Click a button to see grouping in action
+    Click to create a container with grouped shapes
   </div>
 
   <script>
     const status = document.getElementById('status');
 
     document.getElementById('create').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'create-shapes' } }, '*');
+      parent.postMessage({ pluginMessage: { type: 'create' } }, '*');
     });
 
-    document.getElementById('group').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'group-shapes' } }, '*');
-    });
-
-    // Listen for messages from the plugin
     window.addEventListener('message', (event) => {
       const msg = event.data.pluginMessage;
       if (!msg) return;
 
-      switch (msg.type) {
-        case 'shapes-created':
-          status.textContent = 'Created 3 container layers with shapes';
-          break;
-        case 'grouped':
-          status.textContent = msg.message || 'Shapes grouped in container';
-          break;
-        case 'error':
-          status.textContent = msg.message;
-          break;
+      if (msg.type === 'success') {
+        status.textContent = msg.message;
+      } else if (msg.type === 'error') {
+        status.textContent = msg.message;
       }
     });
   </script>

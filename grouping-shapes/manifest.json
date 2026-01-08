@@ -1,6 +1,6 @@
 {
   "id": "68e93374-f927-4ec1-bc5e-ebb615747d24",
-  "name": "Grouping and Ungrouping",
+  "name": "Grouping Shapes",
   "apiVersion": "1",
   "entry": "plugin.js",
   "ui": "ui.html"
