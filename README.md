@@ -89,4 +89,3 @@ npm run dev
 
 - [ ] complete grouping-and-ungrouping example
 - [ ] complete styling nodes example
-- [ ] use responsive css values
