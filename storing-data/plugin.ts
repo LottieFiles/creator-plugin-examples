@@ -1,11 +1,3 @@
-/**
- * Storing Data Example
- *
- * Demonstrates two storage mechanisms:
- * 1. clientStorage - persists in browser (up to 5 MB)
- * 2. node.data - persists with the animation file (up to 5 KB per node)
- */
-
 creator.ui.show({ width: 320, height: 460 });
 
 interface Message {
@@ -24,7 +16,7 @@ interface Message {
 
 creator.ui.onMessage(async (msg: Message) => {
   switch (msg.type) {
-    // Client Storage operations
+    // Client storage operations
     case "client-save": {
       if (msg.key && msg.value) {
         await creator.clientStorage.set(msg.key, msg.value);
@@ -66,7 +58,7 @@ creator.ui.onMessage(async (msg: Message) => {
       break;
     }
 
-    // Node Data operations
+    // Node data operations
     case "node-save": {
       const layers = creator.activeScene.layers;
       if (layers.length === 0) {

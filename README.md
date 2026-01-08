@@ -50,8 +50,8 @@ npm run dev
 
 | Example | Description |
 |---------|-------------|
-| [basic-plugin-html](./basic-plugin-html) | Minimal plugin with HTML/JS |
-| [basic-plugin-react](./basic-plugin-react) | Plugin using React + Vite |
+| [basic-plugin-html](./basic-plugin-html) | Minimal HTML/JS plugin|
+| [basic-plugin-react](./basic-plugin-react) | Minimal React + Vite plugin |
 
 ### Shapes and styling
 

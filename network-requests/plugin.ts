@@ -1,61 +1,44 @@
-/**
- * Network Requests Example
- *
- * Plugin code runs in a sandbox and cannot make network requests directly.
- * This example shows the pattern:
- * 1. UI makes the fetch request
- * 2. UI sends the data to plugin via postMessage
- * 3. Plugin uses the data (e.g., imports SVG into scene)
- */
-
-creator.ui.show({ width: 320, height: 340 });
+creator.ui.show({ width: 320, height: 400 });
 
 interface Message {
-  type: "import-fetched-svg" | "fetch-error";
-  content?: string;
-  error?: string;
+  type: "create-layers";
+  names?: string[];
 }
 
 creator.ui.onMessage(async (msg: Message) => {
-  switch (msg.type) {
-    case "import-fetched-svg": {
-      if (!msg.content) {
-        creator.ui.postMessage({
-          type: "error",
-          message: "No SVG content received",
-        });
-        return;
-      }
+  if (msg.type !== "create-layers") return;
 
-      try {
-        // Import the SVG content that was fetched by the UI
-        const svg = await creator.activeScene.import({
-          type: "SVG",
-          content: msg.content,
-        });
+  if (!msg.names || msg.names.length === 0) {
+    creator.ui.postMessage({
+      type: "error",
+      message: "No Pokémon names received",
+    });
+    return;
+  }
 
-        svg.position.staticValue = { x: 150, y: 150 };
-        svg.scale.staticValue = { x: 2, y: 2 };
+  try {
+    const scene = creator.activeScene;
 
-        creator.ui.postMessage({
-          type: "success",
-          message: "SVG imported successfully!",
-        });
-      } catch (error) {
-        creator.ui.postMessage({
-          type: "error",
-          message: "Failed to import SVG",
-        });
-      }
-      break;
+    // Create a layer for each Pokemon name (first 3)
+    const namesToUse = msg.names.slice(0, 3);
+    for (let i = 0; i < namesToUse.length; i++) {
+      const layer = scene.createEllipseContainer();
+
+      layer.position.staticValue = {
+        x: scene.size.width / 2,
+        y: 100 + i * 150,
+      };
+      layer.name = namesToUse[i];
     }
 
-    case "fetch-error": {
-      creator.ui.postMessage({
-        type: "error",
-        message: msg.error || "Network request failed",
-      });
-      break;
-    }
+    creator.ui.postMessage({
+      type: "success",
+      message: `Created layers!`,
+    });
+  } catch (error) {
+    creator.ui.postMessage({
+      type: "error",
+      message: "Failed to create layers",
+    });
   }
 });

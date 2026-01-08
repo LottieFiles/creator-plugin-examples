@@ -36,33 +36,73 @@
       margin-bottom: 8px;
     }
 
-    .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    .input-group {
+      display: flex;
       gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    input[type="text"]::placeholder {
+      color: #666;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #00C1A2;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: monospace;
+      resize: vertical;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #00C1A2;
     }
 
     button {
-      background: #f5f5f5;
-      color: #1e1e1e;
+      background: #00C1A2;
+      color: #fff;
       border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      text-align: left;
+      white-space: nowrap;
     }
 
     button:hover {
-      background: #e8e8e8;
+      background: #00a88d;
     }
 
-    button .description {
-      font-size: 12px;
-      color: #666;
-      font-weight: 400;
-      margin-top: 4px;
+    button.secondary {
+      background: #444;
+    }
+
+    button.secondary:hover {
+      background: #555;
     }
 
     .status {
@@ -76,6 +116,13 @@
 
     .status.success { color: #00C1A2; }
     .status.error { color: #ff6b6b; }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
@@ -83,53 +130,85 @@
   <p>Import Lottie animations, SVGs, and images into the scene.</p>
 
   <div class="section">
-    <div class="section-title">From URL</div>
-    <div class="buttons">
-      <button id="import-lottie">
-        Import Lottie animation
-        <div class="description">Sample animation from LottieFiles</div>
-      </button>
-      <button id="import-svg">
-        Import SVG
-        <div class="description">SVG logo from Wikipedia</div>
-      </button>
-      <button id="import-image">
-        Import image
-        <div class="description">Random image from Picsum</div>
-      </button>
+    <div class="section-title">Lottie Animation</div>
+    <div class="input-group">
+      <input type="text" id="lottie-url" >
+      <button id="import-lottie">Import</button>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">From content</div>
-    <div class="buttons">
-      <button id="import-svg-content">
-        Import SVG from string
-        <div class="description">Inline SVG content (smiley face)</div>
-      </button>
+    <div class="section-title">SVG from URL</div>
+    <div class="input-group">
+      <input type="text" id="svg-url" >
+      <button id="import-svg">Import</button>
     </div>
   </div>
 
+  <div class="section">
+    <div class="section-title">Image</div>
+    <div class="input-group">
+      <input type="text" id="image-url" value="https://picsum.photos/200/200">
+      <button id="import-image">Import</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">SVG from Content</div>
+    <textarea id="svg-content"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="40" fill="#4285f4"/>
+  <circle cx="35" cy="40" r="8" fill="white"/>
+  <circle cx="65" cy="40" r="8" fill="white"/>
+  <path d="M 30 65 Q 50 80 70 65" stroke="white" stroke-width="4" fill="none"/>
+</svg></textarea>
+    <button id="import-svg-content">Import SVG Content</button>
+  </div>
+
   <div id="status" class="status">
-    Click a button to import an asset
+    Enter a URL or SVG content and click Import
   </div>
 
   <script>
     const status = document.getElementById('status');
 
-    const actions = {
-      'import-lottie': 'import-lottie',
-      'import-svg': 'import-svg',
-      'import-image': 'import-image',
-      'import-svg-content': 'import-svg-content'
-    };
+    function showStatus(message, type = '') {
+      status.textContent = message;
+      status.className = 'status' + (type ? ' ' + type : '');
+    }
 
-    Object.entries(actions).forEach(([id, type]) => {
-      document.getElementById(id).addEventListener('click', () => {
-        status.textContent = 'Importing...';
-        status.className = 'status';
-        parent.postMessage({ pluginMessage: { type } }, '*');
-      });
+    // Lottie import
+    document.getElementById('import-lottie').addEventListener('click', () => {
+      const url = document.getElementById('lottie-url').value.trim() ||
+                  document.getElementById('lottie-url').placeholder;
+      showStatus('Importing Lottie...');
+      parent.postMessage({ pluginMessage: { type: 'import-lottie', url } }, '*');
+    });
+
+    // SVG from URL import
+    document.getElementById('import-svg').addEventListener('click', () => {
+      const url = document.getElementById('svg-url').value.trim() ||
+                  document.getElementById('svg-url').placeholder;
+      showStatus('Importing SVG...');
+      parent.postMessage({ pluginMessage: { type: 'import-svg', url } }, '*');
+    });
+
+    // Image import
+    document.getElementById('import-image').addEventListener('click', () => {
+      const url = document.getElementById('image-url').value.trim() ||
+                  document.getElementById('image-url').placeholder;
+      showStatus('Importing image...');
+      parent.postMessage({ pluginMessage: { type: 'import-image', url } }, '*');
+    });
+
+    // SVG content import
+    document.getElementById('import-svg-content').addEventListener('click', () => {
+      const content = document.getElementById('svg-content').value.trim();
+      if (!content) {
+        showStatus('Please enter SVG content', 'error');
+        return;
+      }
+      showStatus('Importing SVG content...');
+      parent.postMessage({ pluginMessage: { type: 'import-svg-content', content } }, '*');
     });
 
     // Listen for messages from the plugin
@@ -138,11 +217,9 @@
       if (!msg) return;
 
       if (msg.type === 'success') {
-        status.textContent = msg.message;
-        status.className = 'status success';
+        showStatus(msg.message, 'success');
       } else if (msg.type === 'error') {
-        status.textContent = msg.message;
-        status.className = 'status error';
+        showStatus(msg.message, 'error');
       }
     });
   </script>

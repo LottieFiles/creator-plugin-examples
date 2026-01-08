@@ -1,3 +1,5 @@
+// TODO
+
 creator.ui.show({ width: 300, height: 220 });
 
 interface Message {
@@ -14,14 +16,12 @@ creator.ui.onMessage((msg: Message) => {
         position: { x: 100, y: 100 },
         shape: { size: { width: 80, height: 80 } },
       });
-      rect.addFill({ type: "SOLID", color: { r: 66, g: 133, b: 244 } });
 
       // Create an ellipse container next to it
       const ellipse = scene.createEllipseContainer({
         position: { x: 220, y: 100 },
         shape: { size: { width: 80, height: 80 } },
       });
-      ellipse.addFill({ type: "SOLID", color: { r: 234, g: 67, b: 53 } });
 
       // Create a star container below
       const star = scene.createStarContainer({
@@ -32,7 +32,6 @@ creator.ui.onMessage((msg: Message) => {
           outerRadius: 40,
         },
       });
-      star.addFill({ type: "SOLID", color: { r: 251, g: 188, b: 5 } });
 
       creator.ui.postMessage({ type: "shapes-created" });
       break;
@@ -44,7 +43,6 @@ creator.ui.onMessage((msg: Message) => {
         position: { x: 150, y: 150 },
         shape: { size: { width: 60, height: 60 } },
       });
-      container.addFill({ type: "SOLID", color: { r: 66, g: 133, b: 244 } });
 
       // Create additional shapes in the same container
       const ellipse = container.createEllipse({
@@ -60,7 +58,7 @@ creator.ui.onMessage((msg: Message) => {
 
       creator.ui.postMessage({
         type: "grouped",
-        message: `Created group with ${group.children.length} shapes`,
+        message: `Created group`,
       });
       break;
     }
