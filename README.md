@@ -58,8 +58,8 @@ npm run dev
 | Example | Description |
 |---------|-------------|
 | [creating-shapes](./creating-shapes) | Create rectangles, ellipses, polygons, stars, and paths |
-| [grouping-and-ungrouping](./grouping-and-ungrouping) | Group shapes together |
-| [styling-nodes](./styling-nodes) | Add fills, gradients, and strokes |
+| [grouping-and-ungrouping (WIP)](./grouping-and-ungrouping) | Group shapes together |
+| [styling-nodes (WIP)](./styling-nodes) | Add fills, gradients, and strokes |
 
 ### Animation
 
@@ -84,3 +84,9 @@ npm run dev
 |---------|-------------|
 | [external-libs-html](./external-libs-html) | Use CDN libraries in HTML plugins |
 | [external-libs-react](./external-libs-react) | Use npm packages in React plugins |
+
+## TODO
+
+- [ ] complete grouping-and-ungrouping example
+- [ ] complete styling nodes example
+- [ ] use responsive css values
