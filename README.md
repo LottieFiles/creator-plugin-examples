@@ -87,6 +87,4 @@ npm run dev
 
 ## TODO
 
-- [ ] complete grouping-shapes example
-- [ ] complete styling nodes example
 - [ ] Update API methods after layer and shape-related API updates are implemented
