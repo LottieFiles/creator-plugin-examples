@@ -66,9 +66,16 @@
   <div class="section">
     <div class="section-title">Fills</div>
     <div class="buttons">
-      <button id="solid">Solid color fill</button>
+      <button id="solid">Solid color</button>
       <button id="linear">Linear gradient</button>
       <button id="radial">Radial gradient</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Groups</div>
+    <div class="buttons">
+      <button id="group-fill">Group with fill</button>
     </div>
   </div>
 
@@ -76,14 +83,16 @@
     <div class="section-title">Strokes</div>
     <div class="buttons">
       <button id="stroke-solid">Solid stroke</button>
-      <button id="stroke-dashed">Dashed stroke</button>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Combined</div>
+    <div class="section-title">Animations</div>
     <div class="buttons">
-      <button id="combined">Gradient fill + stroke</button>
+      <button id="animate-solid">Animate solid</button>
+      <button id="animate-linear">Animate linear</button>
+      <button id="animate-radial">Animate radial</button>
+      <button id="animate-stroke">Animate stroke</button>
     </div>
   </div>
 
@@ -92,9 +101,12 @@
       'solid': 'solid-fill',
       'linear': 'linear-gradient',
       'radial': 'radial-gradient',
+      'group-fill': 'group-fill',
       'stroke-solid': 'stroke-solid',
-      'stroke-dashed': 'stroke-dashed',
-      'combined': 'combined'
+      'animate-solid': 'animate-solid',
+      'animate-linear': 'animate-linear',
+      'animate-radial': 'animate-radial',
+      'animate-stroke': 'animate-stroke'
     };
 
     Object.entries(actions).forEach(([id, type]) => {

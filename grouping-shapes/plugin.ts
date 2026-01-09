@@ -1,4 +1,4 @@
-creator.ui.show({ width: 300, height: 200 });
+creator.ui.show({ width: 300, height: 250 });
 
 interface Message {
   type: "create";
@@ -25,9 +25,8 @@ creator.ui.onMessage((msg: Message) => {
   // Group the ellipse and star together
   const group = layer.createGroup([ellipse, star]);
 
-  // Add rotation animation to the group (0° to 360° over the scene duration)
-  // This rotation affects ONLY the shapes inside the group (ellipse and star)
-  // The rectangle outside the group remains stationary
+  // Add rotation animation to the entire group
+  // This rotation doesn't affect the rectangle shape, which is outside the group
   const endFrame = scene.duration * scene.framerate;
 
   group.rotation.addKeyframes([
