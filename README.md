@@ -84,7 +84,3 @@ npm run dev
 |---------|-------------|
 | [external-libs-html](./external-libs-html) | Use CDN libraries in HTML plugins |
 | [external-libs-react](./external-libs-react) | Use npm packages in React plugins |
-
-## TODO
-
-- [ ] Update API methods after layer and shape-related API updates are implemented

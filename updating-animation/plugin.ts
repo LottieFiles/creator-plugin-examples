@@ -13,10 +13,10 @@ interface Message {
 
 function isLayer(node: Shape | Layer): node is Layer {
   return (
-    node.type === "CONTAINER" ||
-    node.type === "SCENE_INSTANCE" ||
-    node.type === "IMAGE" ||
-    node.type === "TEXT"
+    node.type === "SHAPE_LAYER" ||
+    node.type === "SCENE_LAYER" ||
+    node.type === "IMAGE_LAYER" ||
+    node.type === "TEXT_LAYER"
   );
 }
 

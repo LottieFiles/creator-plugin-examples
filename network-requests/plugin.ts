@@ -22,7 +22,9 @@ creator.ui.onMessage(async (msg: Message) => {
     // Create a layer for each Pokemon name (first 3)
     const namesToUse = msg.names.slice(0, 3);
     for (let i = 0; i < namesToUse.length; i++) {
-      const layer = scene.createEllipseContainer();
+      const layer = scene.createShapeLayer();
+      layer.createEllipse();
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
       layer.position.staticValue = {
         x: scene.size.width / 2,

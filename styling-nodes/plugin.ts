@@ -13,23 +13,6 @@ interface Message {
     | "animate-stroke";
 }
 
-function removeFirstFillOfType(
-  container: {
-    fills: ReadonlyArray<{ type: string }>;
-    removeFill: (index: number) => void;
-  },
-  fillType: "SOLID" | "GRADIENT_LINEAR" | "GRADIENT_RADIAL"
-): boolean {
-  const index = container.fills.findIndex((fill) => fill.type === fillType);
-
-  if (index !== -1) {
-    container.removeFill(index);
-    return true;
-  }
-
-  return false;
-}
-
 creator.ui.onMessage((msg: Message) => {
   const scene = creator.activeScene;
   const endFrame = scene.duration * scene.framerate;
@@ -37,14 +20,10 @@ creator.ui.onMessage((msg: Message) => {
 
   switch (msg.type) {
     case "solid-fill": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      removeFirstFillOfType(layer, "SOLID");
-
-      // Add a solid color fill
-      layer.addFill({
+      layer.createFill({
         type: "SOLID",
         color: { r: 66, g: 133, b: 244 },
       });
@@ -52,12 +31,10 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "linear-gradient": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
-      removeFirstFillOfType(layer, "SOLID");
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      layer.addFill({
+      layer.createFill({
         type: "GRADIENT_LINEAR",
         start: { x: -50, y: 0 },
         end: { x: 50, y: 0 },
@@ -70,12 +47,9 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "radial-gradient": {
-      const layer = scene.createEllipseContainer({
-        position: sceneCenter,
-      });
-      removeFirstFillOfType(layer, "SOLID");
-
-      layer.addFill({
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createEllipse();
+      layer.createFill({
         type: "GRADIENT_RADIAL",
         start: { x: -50, y: 0 },
         end: { x: 50, y: 0 },
@@ -91,11 +65,10 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "stroke-solid": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      layer.addStroke({
+      layer.createStroke({
         fill: { type: "SOLID", color: { r: 33, g: 33, b: 33 } },
         width: 4,
       });
@@ -103,11 +76,9 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "group-fill": {
-      // Create a container with multiple shapes
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-        shape: { size: { width: 60, height: 60 } },
-      });
+      // Create a layer with multiple shapes
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle({ size: { width: 60, height: 60 } });
 
       const ellipse = layer.createEllipse({
         position: { x: -60, y: 0 },
@@ -120,19 +91,17 @@ creator.ui.onMessage((msg: Message) => {
       });
 
       // Group the shapes - fill applied to group affects all children,
-      // but not the shapes in the parent container
-      const group = layer.createGroup([ellipse, rect]);
-      group.addFill({ type: "SOLID", color: { r: 255, g: 100, b: 50 } });
+      // but not the shapes in the parent layer
+      const group = layer.createGroup({ shapes: [ellipse, rect] });
+      group.createFill({ type: "SOLID", color: { r: 255, g: 100, b: 50 } });
       break;
     }
 
     case "animate-solid": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
-      removeFirstFillOfType(layer, "SOLID");
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      layer.addFill({ type: "SOLID", color: { r: 255, g: 0, b: 0 } });
+      layer.createFill({ type: "SOLID", color: { r: 255, g: 0, b: 0 } });
 
       // Animate fill color: red -> green -> blue
       const fill = layer.fills[0];
@@ -147,12 +116,10 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "animate-linear": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
-      removeFirstFillOfType(layer, "SOLID");
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      layer.addFill({
+      layer.createFill({
         type: "GRADIENT_LINEAR",
         start: { x: -50, y: 0 },
         end: { x: 50, y: 0 },
@@ -195,13 +162,10 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "animate-radial": {
-      const layer = scene.createEllipseContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createEllipse();
 
-      removeFirstFillOfType(layer, "SOLID");
-
-      layer.addFill({
+      layer.createFill({
         type: "GRADIENT_RADIAL",
         start: { x: -50, y: 0 },
         end: { x: 50, y: 0 },
@@ -244,11 +208,10 @@ creator.ui.onMessage((msg: Message) => {
     }
 
     case "animate-stroke": {
-      const layer = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      layer.createRectangle();
 
-      layer.addStroke({
+      layer.createStroke({
         fill: { type: "SOLID", color: { r: 255, g: 0, b: 0 } },
         width: 2,
       });

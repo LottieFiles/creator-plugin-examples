@@ -1,5 +1,3 @@
-// TODO: Update after Plugin API renaming
-
 creator.ui.show({ width: 300, height: 340 });
 
 interface Message {
@@ -20,11 +18,10 @@ creator.ui.onMessage((msg: Message) => {
   const scene = creator.activeScene;
 
   const createRectangleLayer = () => {
-    const rect = scene.createRectangleContainer({
-      position: sceneCenter,
-      shape: { size: { width: 100, height: 100 } },
-    });
-    return rect;
+    const layer = scene.createShapeLayer({ position: sceneCenter });
+    layer.createRectangle({ size: { width: 100, height: 100 } });
+    layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
+    return layer;
   };
 
   switch (msg.type) {

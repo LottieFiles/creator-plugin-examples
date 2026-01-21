@@ -9,10 +9,12 @@ creator.ui.onMessage((msg: Message) => {
 
   const scene = creator.activeScene;
 
-  // Create a rectangle container as the parent layer
-  const layer = scene.createRectangleContainer({
+  // Create a shape layer as the parent layer
+  const layer = scene.createShapeLayer({
     position: { x: scene.size.width / 2, y: scene.size.height / 2 },
   });
+  layer.createRectangle();
+  layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
   const ellipse = layer.createEllipse({
     position: { x: -200, y: 0 },
@@ -23,7 +25,7 @@ creator.ui.onMessage((msg: Message) => {
   });
 
   // Group the ellipse and star together
-  const group = layer.createGroup([ellipse, star]);
+  const group = layer.createGroup({ shapes: [ellipse, star] });
 
   // Add rotation animation to the entire group
   // This rotation doesn't affect the rectangle shape, which is outside the group
@@ -35,7 +37,7 @@ creator.ui.onMessage((msg: Message) => {
   ]);
 
   // Likewise, the fill color changes affect only the shapes inside the group
-  group.addFill({ type: "SOLID", color: { r: 0, g: 0, b: 255 } });
+  group.createFill({ type: "SOLID", color: { r: 0, g: 0, b: 255 } });
 
   creator.ui.postMessage({
     type: "success",

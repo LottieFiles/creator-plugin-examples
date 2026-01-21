@@ -23,14 +23,12 @@ creator.ui.onMessage((msg: Message) => {
     const scene = creator.activeScene;
 
     // Create rectangle at center of scene
-    const layer = scene.createRectangleContainer({
+    const layer = scene.createShapeLayer({
       position: { x: scene.size.width / 2, y: scene.size.height / 2 },
-      shape: { size: { width: 120, height: 120 }, roundness: 12 },
     });
+    layer.createRectangle({ size: { width: 120, height: 120 }, roundness: 12 });
 
-    // Update the existing fill
-    if (layer.fills.length > 0 && layer.fills[0].type === "SOLID") {
-      layer.fills[0].color.staticValue = rgb;
-    }
+    // Add a fill with the selected color
+    layer.createFill({ type: "SOLID", color: rgb });
   }
 });
