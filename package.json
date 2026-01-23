@@ -3,7 +3,7 @@
   "description": "Example plugins for LottieFiles Creator",
   "private": true,
   "devDependencies": {
-    "@lottiefiles/creator-plugin-types": "^0.0.8",
+    "@lottiefiles/creator-plugin-types": "^0.0.10",
     "@types/node": "^25.0.3",
     "typescript": "~5.9.3"
   }

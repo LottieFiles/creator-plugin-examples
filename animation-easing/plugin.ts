@@ -21,10 +21,11 @@ const EASING: Record<string, Easing> = {
 
 // Helper to create a layer with position animation
 const createLayer = (y: number, easing: Easing) => {
-  const layer = creator.activeScene.createRectangleContainer({
+  const layer = creator.activeScene.createShapeLayer({
     position: { x: 50, y },
-    shape: { size: { width: 60, height: 60 } },
   });
+  layer.createRectangle({ size: { width: 60, height: 60 } });
+  layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
   layer.position.addKeyframes([
     { frame: 0, value: { x: 50, y }, easing },
     { frame: 60, value: { x: 350, y } },

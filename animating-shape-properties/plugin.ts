@@ -1,5 +1,3 @@
-// TODO: Update after Plugin API renaming
-
 creator.ui.show({ width: 300, height: 380 });
 
 interface Message {
@@ -21,93 +19,77 @@ creator.ui.onMessage((msg: Message) => {
 
   switch (msg.type) {
     case "animate-rect-size": {
-      const rect = scene.createRectangleContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      const rectangle = layer.createRectangle();
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
-      // Get the rectangle shape and animate its size
-      const shape = rect.shapes[0];
-      if (shape && shape.type === "RECTANGLE") {
-        shape.size.addKeyframes([
-          { frame: 0, value: { width: 50, height: 50 } },
-          { frame: 30, value: { width: 200, height: 100 } },
-          { frame: 60, value: { width: 50, height: 50 } },
-        ]);
-      }
+      // Animate the rectangle shape's size
+      rectangle.size.addKeyframes([
+        { frame: 0, value: { width: 50, height: 50 } },
+        { frame: 30, value: { width: 200, height: 100 } },
+        { frame: 60, value: { width: 50, height: 50 } },
+      ]);
       break;
     }
 
     case "animate-rect-roundness": {
-      const rect = scene.createRectangleContainer({
-        position: sceneCenter,
-        shape: { size: { width: 150, height: 150 } },
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      const rectangle = layer.createRectangle({
+        size: { width: 150, height: 150 },
       });
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
       // Animate roundness from sharp to fully rounded
-      const shape = rect.shapes[0];
-      if (shape && shape.type === "RECTANGLE") {
-        shape.roundness.addKeyframes([
-          { frame: 0, value: 0 },
-          { frame: 30, value: 75 },
-          { frame: 60, value: 0 },
-        ]);
-      }
+      rectangle.roundness.addKeyframes([
+        { frame: 0, value: 0 },
+        { frame: 30, value: 75 },
+        { frame: 60, value: 0 },
+      ]);
       break;
     }
 
     case "animate-polygon-points": {
-      const polygon = scene.createPolygonContainer({
-        position: sceneCenter,
-        shape: { outerRadius: 80 },
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      const polygon = layer.createPolygon({ outerRadius: 80 });
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
       // Animate number of points (triangle to octagon)
-      const shape = polygon.shapes[0];
-      if (shape && shape.type === "POLYGON") {
-        shape.points.addKeyframes([
-          { frame: 0, value: 3 },
-          { frame: 30, value: 8 },
-          { frame: 60, value: 3 },
-        ]);
-      }
+      polygon.points.addKeyframes([
+        { frame: 0, value: 3 },
+        { frame: 30, value: 8 },
+        { frame: 60, value: 3 },
+      ]);
       break;
     }
 
     case "animate-star-radius": {
-      const star = scene.createStarContainer({
-        position: sceneCenter,
-        shape: {
-          points: 5,
-          outerRadius: 80,
-        },
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      const star = layer.createStar({
+        points: 5,
+        outerRadius: 80,
       });
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
       // Animate inner radius to create a pulsing star effect
-      const shape = star.shapes[0];
-      if (shape && shape.type === "STAR") {
-        shape.innerRadius.addKeyframes([
-          { frame: 0, value: 20 },
-          { frame: 30, value: 60 },
-          { frame: 60, value: 20 },
-        ]);
-      }
+      star.innerRadius.addKeyframes([
+        { frame: 0, value: 20 },
+        { frame: 30, value: 60 },
+        { frame: 60, value: 20 },
+      ]);
       break;
     }
 
     case "animate-ellipse-size": {
-      const ellipse = scene.createEllipseContainer({
-        position: sceneCenter,
-      });
+      const layer = scene.createShapeLayer({ position: sceneCenter });
+      const ellipse = layer.createEllipse();
+      layer.createFill({ type: "SOLID", color: { r: 128, g: 128, b: 128 } });
 
       // Animate from circle to wide ellipse
-      const shape = ellipse.shapes[0];
-      if (shape && shape.type === "ELLIPSE") {
-        shape.size.addKeyframes([
-          { frame: 0, value: { width: 100, height: 100 } },
-          { frame: 30, value: { width: 200, height: 60 } },
-          { frame: 60, value: { width: 100, height: 100 } },
-        ]);
-      }
+      ellipse.size.addKeyframes([
+        { frame: 0, value: { width: 100, height: 100 } },
+        { frame: 30, value: { width: 200, height: 60 } },
+        { frame: 60, value: { width: 100, height: 100 } },
+      ]);
       break;
     }
   }
