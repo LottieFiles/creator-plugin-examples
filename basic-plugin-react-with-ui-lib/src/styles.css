@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/*
+ * Add custom theme colors or utilities below using Tailwind v4's CSS-based config.
+ *
+ * Example — custom colors:
+ *
+ *   @theme {
+ *     --color-brand: #6d28d9;
+ *     --color-brand-light: #a78bfa;
+ *   }
+ *
+ * Then use them as utilities: bg-brand, text-brand-light, etc.
+ */
+

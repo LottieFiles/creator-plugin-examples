@@ -27,14 +27,12 @@ export const App = () => {
 
   return (
     <ThemeProvider tokens={tokens} themeName={themeName}>
-      <div className="min-h-screen bg-background p-4 text-foreground">
-        <h3 className="mb-2 text-lg font-semibold text-primary">
-          Basic Plugin
-        </h3>
-        <p className="mb-4 text-sm text-muted-foreground">
+      <div className="min-h-screen bg-background p-4">
+        <h3 className="mb-2 text-lg font-semibold">Basic Plugin</h3>
+        <p className="mb-4 text-sm">
           Click the button to create a rectangle in the scene.
         </p>
-        <Button className="w-full" onClick={handleClick}>
+        <Button className="mt-4 w-full" onClick={handleClick}>
           Create rectangle
         </Button>
       </div>
