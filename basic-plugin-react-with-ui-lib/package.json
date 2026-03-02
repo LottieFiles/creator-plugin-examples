@@ -1,5 +1,5 @@
 {
-  "name": "basic-react-plugin",
+  "name": "basic-react-plugin-with-ui-lib",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@lottiefiles/creator-plugins-ui": "^0.2.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -17,7 +18,7 @@
     "@eslint/js": "^9.36.0",
     "@lottiefiles/creator-plugin-types": "^0.0.15",
     "@lottiefiles/vite-plugin-creator": "^0.0.4",
-    "@types/node": "^24.6.0",
+    "@types/node": "^25.3.3",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
