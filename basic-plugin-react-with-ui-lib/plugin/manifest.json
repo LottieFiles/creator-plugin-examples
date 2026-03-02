@@ -1,0 +1,7 @@
+{
+  "id": "b3c7e5d1-8f2a-4a6b-9e1d-5c3f7a8b2d4e",
+  "name": "Basic Plugin with UI Library (React)",
+  "apiVersion": "1",
+  "entry": "plugin.js",
+  "ui": "ui.html"
+}

@@ -52,6 +52,7 @@ npm run dev
 |---------|-------------|
 | [basic-plugin-html](./basic-plugin-html) | Minimal HTML/JS plugin|
 | [basic-plugin-react](./basic-plugin-react) | Minimal React + Vite plugin |
+| [basic-plugin-react-with-ui-lib](./basic-plugin-react-with-ui-lib) | React + Vite plugin using the Creator Plugins UI library |
 
 ### Shapes and styling
 
