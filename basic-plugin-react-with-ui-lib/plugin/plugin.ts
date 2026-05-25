@@ -13,7 +13,7 @@ creator.ui.onMessage((msg: Message) => {
     case "ui-ready": {
       // Send the current theme to the UI
       const { tokens, themeName } = creator.ui.theme;
-      creator.ui.postMessage({ type: "theme:change", tokens, themeName });
+      creator.ui.postMessage({ type: "change:theme", tokens, themeName });
       break;
     }
     case "create-rectangle": {
@@ -29,6 +29,6 @@ creator.ui.onMessage((msg: Message) => {
 });
 
 // Update the UI when Creator's theme changes
-creator.on("theme:change", ({ tokens, themeName }) => {
-  creator.ui.postMessage({ type: "theme:change", tokens, themeName });
+creator.on("change:theme", ({ tokens, themeName }) => {
+  creator.ui.postMessage({ type: "change:theme", tokens, themeName });
 });
