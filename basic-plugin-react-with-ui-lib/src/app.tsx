@@ -8,7 +8,7 @@ export const App = () => {
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       const msg = e.data?.pluginMessage;
-      if (msg?.type === "theme:change") {
+      if (msg?.type === "change:theme") {
         setTokens(msg.tokens);
         setThemeName(msg.themeName);
       }

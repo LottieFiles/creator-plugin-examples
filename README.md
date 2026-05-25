@@ -59,8 +59,8 @@ npm run dev
 | Example | Description |
 |---------|-------------|
 | [creating-shapes](./creating-shapes) | Create rectangles, ellipses, polygons, stars, and paths |
-| [grouping-shapes (WIP)](./grouping-shapes) | Group shapes together |
-| [styling-nodes (WIP)](./styling-nodes) | Add fills, gradients, and strokes |
+| [grouping-shapes](./grouping-shapes) | Group shapes together |
+| [styling-nodes](./styling-nodes) | Add fills, gradients, and strokes |
 
 ### Animation
 
