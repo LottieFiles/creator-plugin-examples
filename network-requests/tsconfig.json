@@ -9,7 +9,7 @@
     "noEmit": false,
     "typeRoots": [
       "../node_modules/@types",
-      "../node_modules/@lottiefiles/creator-plugin-types"
+      "../node_modules/@lottiefiles/creator-api-types"
     ]
   },
   "include": ["plugin.ts"]
