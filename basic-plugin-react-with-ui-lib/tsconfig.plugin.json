@@ -21,13 +21,10 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
     "noUncheckedIndexedAccess": true,
 
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@lottiefiles/creator-api-types"
-    ]
+    "types": ["creator-api-types"],
+    "typeRoots": ["../node_modules/@types", "../node_modules/@lottiefiles"]
   },
   "include": ["plugin"]
 }

@@ -67,7 +67,7 @@ creator.ui.onMessage((msg: Message) => {
         creator.ui.postMessage({
           type: "status",
           message: `No keyframes. Static value: (${layer.position.staticValue.x.toFixed(
-            0
+            0,
           )}, ${layer.position.staticValue.y.toFixed(0)})`,
         });
         return;
@@ -88,6 +88,15 @@ creator.ui.onMessage((msg: Message) => {
 
     case "update-static": {
       const newValue = msg.value;
+
+      if (!newValue) {
+        creator.ui.postMessage({
+          type: "error",
+          message: "No value provided for static update",
+        });
+        return;
+      }
+
       layer.position.staticValue = newValue;
 
       creator.ui.postMessage({
@@ -110,6 +119,15 @@ creator.ui.onMessage((msg: Message) => {
       }
 
       const newValue = msg.value;
+
+      if (!newValue) {
+        creator.ui.postMessage({
+          type: "error",
+          message: "No value provided for keyframe update",
+        });
+        return;
+      }
+
       keyframe.value = newValue;
 
       creator.ui.postMessage({
