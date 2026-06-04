@@ -11,7 +11,10 @@ function success(label: string) {
 }
 
 function error(label: string) {
-  creator.ui.postMessage({ type: "error", message: `Failed to import ${label}` });
+  creator.ui.postMessage({
+    type: "error",
+    message: `Failed to import ${label}`,
+  });
 }
 
 creator.ui.onMessage(async (msg: Message) => {
@@ -20,6 +23,7 @@ creator.ui.onMessage(async (msg: Message) => {
   switch (msg.type) {
     case "import-lottie":
       try {
+        if (!msg.url) throw new Error("URL not provided.");
         await scene.import({ type: "LOTTIE", url: msg.url });
         success("Lottie");
       } catch {
@@ -29,6 +33,7 @@ creator.ui.onMessage(async (msg: Message) => {
 
     case "import-svg":
       try {
+        if (!msg.url) throw new Error("URL not provided.");
         await scene.import({ type: "SVG", url: msg.url });
         success("SVG");
       } catch {
@@ -38,6 +43,7 @@ creator.ui.onMessage(async (msg: Message) => {
 
     case "import-image":
       try {
+        if (!msg.url) throw new Error("URL not provided.");
         await scene.import({ type: "IMAGE", url: msg.url });
         success("Image");
       } catch {
@@ -47,6 +53,7 @@ creator.ui.onMessage(async (msg: Message) => {
 
     case "import-svg-content":
       try {
+        if (!msg.content) throw new Error("Content not provided.");
         await scene.import({ type: "SVG", content: msg.content });
         success("SVG content");
       } catch {
