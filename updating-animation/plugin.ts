@@ -11,32 +11,30 @@ interface Message {
   value?: { x: number; y: number };
 }
 
-function isLayer(node: Shape | Layer): node is Layer {
-  return (
-    node.type === "SHAPE_LAYER" ||
-    node.type === "SCENE_LAYER" ||
-    node.type === "IMAGE_LAYER" ||
-    node.type === "TEXT_LAYER"
-  );
+const SUPPORTED_LAYER_TYPES: ReadonlySet<string> = new Set([
+  "SHAPE_LAYER",
+  "SCENE_LAYER",
+  "IMAGE_LAYER",
+  "TEXT_LAYER",
+]);
+
+const UNSUPPORTED_MESSAGE = "Select a shape, image, text or scene layer";
+
+function isSupportedLayer(
+  node: Shape | Layer,
+): node is ShapeLayer | SceneLayer | ImageLayer | TextLayer {
+  return SUPPORTED_LAYER_TYPES.has(node.type);
 }
 
 creator.ui.onMessage((msg: Message) => {
   const selection = creator.selection.nodes;
 
-  if (selection.length === 0) {
-    creator.ui.postMessage({
-      type: "error",
-      message: "Please select a layer",
-    });
-    return;
-  }
-
   const layer = selection[0];
 
-  if (!isLayer(layer)) {
+  if (!layer || !isSupportedLayer(layer)) {
     creator.ui.postMessage({
       type: "error",
-      message: "Please select a layer",
+      message: UNSUPPORTED_MESSAGE,
     });
     return;
   }
