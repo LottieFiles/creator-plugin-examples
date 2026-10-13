@@ -3,5 +3,11 @@
   "name": "Importing Assets",
   "apiVersion": "1",
   "entry": "plugin.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "picsum.photos",
+      "fastly.picsum.photos"
+    ]
+  }
 }

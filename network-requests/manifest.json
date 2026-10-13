@@ -3,5 +3,10 @@
   "name": "Network Requests",
   "apiVersion": "1",
   "entry": "plugin.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "pokeapi.co"
+    ]
+  }
 }

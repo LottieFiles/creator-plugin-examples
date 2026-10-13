@@ -3,5 +3,8 @@
   "name": "Basic Plugin with UI Library (React)",
   "apiVersion": "1",
   "entry": "plugin.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": []
+  }
 }

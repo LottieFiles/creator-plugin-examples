@@ -44,6 +44,10 @@ npm run dev
 3. Click **Develop** → **New plugin**
 4. Serve the example folder locally and enter the URL, or zip the distribution files (`manifest.json`, `plugin.js`, `ui.html`) and upload it
 
+## Network access
+
+Each `manifest.json` lists the hosts its UI contacts in `networkAccess.allowedDomains`. Creator blocks requests to any other host, and scripts loaded from a CDN. `network-requests` declares `pokeapi.co`, and `importing-assets` declares `picsum.photos` and the host it redirects to, `fastly.picsum.photos`. The other examples make no network requests, so their lists are empty.
+
 ## Examples
 
 ### Getting started
@@ -83,5 +87,5 @@ npm run dev
 
 | Example | Description |
 |---------|-------------|
-| [external-libs-html](./external-libs-html) | Use CDN libraries in HTML plugins |
+| [external-libs-html](./external-libs-html) | Copy a library into an HTML plugin's `ui.html` |
 | [external-libs-react](./external-libs-react) | Use npm packages in React plugins |

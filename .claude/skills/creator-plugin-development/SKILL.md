@@ -63,9 +63,14 @@ The plugin manifest defines the plugin's identity and entry points:
   "name": "My Plugin",
   "apiVersion": "1",
   "entry": "plugin.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": []
+  }
 }
 ```
+
+`networkAccess.allowedDomains` lists every host the UI contacts. An empty list means no network access. The optional `capabilities` field turns on WebAssembly (`wasm`) or `eval` (`codeGeneration`). See `references/network-and-libraries.md`.
 
 ## Development Commands
 
@@ -237,9 +242,12 @@ layers.forEach((node) => {
 
 The plugin sandbox **cannot** make `fetch` requests. Use this pattern:
 
-1. **UI fetches** data from external API (in `ui.html` script or React component)
-2. **UI sends** data to plugin via `parent.postMessage({ pluginMessage: ... }, '*')`
-3. **Plugin processes** data and applies to scene
+1. **Manifest declares** the API's host in `networkAccess.allowedDomains`, for example `"api.example.com"`
+2. **UI fetches** data from external API (in `ui.html` script or React component)
+3. **UI sends** data to plugin via `parent.postMessage({ pluginMessage: ... }, '*')`
+4. **Plugin processes** data and applies to scene
+
+Scripts, stylesheets and WebAssembly are bundled into `ui.html`, never loaded from a CDN.
 
 For complete examples, see `references/network-and-libraries.md`.
 
@@ -256,6 +264,12 @@ For complete examples, see `references/network-and-libraries.md`.
 9. **Color values are 0-255** — RGB channels use the range `{ r: 0-255, g: 0-255, b: 0-255 }`.
 10. **Not calling `creator.ui.show()` early** — Call it at the top of `plugin.ts`, before setting up message handlers.
 11. **Forgetting to recompile HTML plugins** — After editing `plugin.ts`, run `npx tsc` to regenerate `plugin.js`. React plugins auto-rebuild with `npm run dev`.
+12. **Undeclared hosts** — A request to a host missing from `networkAccess.allowedDomains` is blocked, in the Develop tab as well as after publishing. Declare the exact host or a `*.example.com` wildcard, with no scheme or path. `*.example.com` does not cover `example.com`.
+13. **Loading libraries from a CDN** — `<script src="https://cdn...">` and `import()` of a URL are blocked even from a declared host. Install the package and let Vite bundle it, or paste the library into an inline `<script>` in `ui.html`.
+14. **Running fetched text as code** — `<script>` elements built from fetched text are blocked, and so are `eval` and `new Function` unless the manifest declares `codeGeneration`. Fetch data, not code. Declare `codeGeneration` only when the plugin compiles code on purpose.
+15. **WebAssembly from a CDN** — Players such as dotlottie and ThorVG download their `.wasm` from a CDN by default. Bundle the file, point the player at it, and declare `"capabilities": ["wasm"]`.
+16. **`javascript:` URLs** — `href="javascript:..."` does not run. Use `addEventListener`. Inline event handlers written in your HTML (`onclick="..."`) do run, but a handler attribute added from script does not.
+17. **Navigating the plugin page** — Changing `location.href` or following a link replaces the plugin UI with an error page. Open web pages with `creator.openLink(url)` from the sandbox.
 
 ## Verification Checklist
 
@@ -265,6 +279,8 @@ Before considering a task complete:
 - [ ] **React plugins:** Run `npx tsc -b` — fix all type errors
 - [ ] Test message flow: UI sends > plugin receives > plugin responds > UI receives
 - [ ] Confirm network requests are made from UI code, not plugin sandbox
+- [ ] Every host the UI contacts is in `networkAccess.allowedDomains`, and the browser console shows no `Creator blocked` warnings
+- [ ] No `<script src>` or `.wasm` loaded from a URL in `ui.html`
 - [ ] Verify `pluginMessage` wrapping is correct in both directions
 
 ## Reference Guide
@@ -278,4 +294,4 @@ For deeper information, consult these reference files as needed:
 | `references/shapes-styling-animation.md` | Creating shapes, fills/strokes/gradients, keyframes, easing |
 | `references/importing-assets.md` | LOTTIE/SVG/IMAGE import formats and patterns |
 | `references/storage-and-events.md` | clientStorage, node data, selection events, timeline API |
-| `references/network-and-libraries.md` | Fetch-from-UI pattern, using npm packages and CDN libraries |
+| `references/network-and-libraries.md` | Fetch-from-UI pattern, declaring `networkAccess` and `capabilities`, bundling libraries and WebAssembly |
