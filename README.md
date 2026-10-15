@@ -27,7 +27,7 @@ To compile a React plugin:
 
 ```bash
 cd basic-plugin-react
-npm build
+npm run build
 ```
 
 Or create a local development URL for React plugins:
@@ -54,7 +54,9 @@ npx skills add LottieFiles/creator-plugin-skills --skill '*'
 
 ## Network access
 
-Each `manifest.json` lists the hosts its UI contacts in `networkAccess.allowedDomains`. Declare every host your UI contacts, and bundle scripts instead of loading them from a CDN. `network-requests` declares `pokeapi.co`, and `importing-assets` declares `picsum.photos` and the host it redirects to, `fastly.picsum.photos`. The other examples make no network requests, so their lists are empty.
+- Each `manifest.json` lists the hosts its UI contacts in `networkAccess.allowedDomains`.
+- Declare every host your UI contacts, and bundle scripts instead of loading them from a CDN.
+- The React starter (`npm create @lottiefiles/creator-plugin`) and the React examples automatically inline every imported script, stylesheet and asset into `ui.html` (except for files in `public/`, and full URLs in your code or its libraries, such as `fetch("https://api.example.com")`.
 
 ## Examples
 
