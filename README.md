@@ -44,9 +44,17 @@ npm run dev
 3. Click **Develop** → **New plugin**
 4. Serve the example folder locally and enter the URL, or zip the distribution files (`manifest.json`, `plugin.js`, `ui.html`) and upload it
 
+### AI agent skills
+
+To give your coding agent the Creator plugin skills, install them from [creator-plugin-skills](https://github.com/LottieFiles/creator-plugin-skills):
+
+```bash
+npx skills add LottieFiles/creator-plugin-skills --skill '*'
+```
+
 ## Network access
 
-Each `manifest.json` lists the hosts its UI contacts in `networkAccess.allowedDomains`. Creator blocks requests to any other host, and scripts loaded from a CDN. `network-requests` declares `pokeapi.co`, and `importing-assets` declares `picsum.photos` and the host it redirects to, `fastly.picsum.photos`. The other examples make no network requests, so their lists are empty.
+Each `manifest.json` lists the hosts its UI contacts in `networkAccess.allowedDomains`. Declare every host your UI contacts, and bundle scripts instead of loading them from a CDN. `network-requests` declares `pokeapi.co`, and `importing-assets` declares `picsum.photos` and the host it redirects to, `fastly.picsum.photos`. The other examples make no network requests, so their lists are empty.
 
 ## Examples
 
