@@ -3,5 +3,9 @@
   "name": "Animating Transforms",
   "apiVersion": "1",
   "entry": "plugin.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "networkAccess": {
+    "allowedDomains": []
+  },
+  "capabilities": []
 }
