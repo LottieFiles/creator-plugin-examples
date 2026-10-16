@@ -9,5 +9,6 @@
       "picsum.photos",
       "fastly.picsum.photos"
     ]
-  }
+  },
+  "capabilities": []
 }
